@@ -3,6 +3,7 @@ import random
 import sys
 import time
 import pygame as pg
+import math
 
 
 WIDTH = 1100  # ゲームウィンドウの幅
@@ -53,7 +54,8 @@ class Bird:
         こうかとん画像Surfaceを生成する
         引数 xy：こうかとん画像の初期位置座標タプル
         """
-        self.img = __class__.imgs[(+5, 0)]
+        self.dire = (+5, 0)
+        self.img = __class__.imgs[self.dire]
         self.rct: pg.Rect = self.img.get_rect()
         self.rct.center = xy
 
@@ -82,6 +84,7 @@ class Bird:
             self.rct.move_ip(-sum_mv[0], -sum_mv[1])
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self.img = __class__.imgs[tuple(sum_mv)]
+            self.dire = tuple(sum_mv)
         screen.blit(self.img, self.rct)
 
 
@@ -98,7 +101,12 @@ class Beam:
         self.rct = self.img.get_rect() # Rect
         self.rct.center = bird.rct.center # ビームの中心縦座標 = こうかとんの中心縦座標
         self.rct.left = bird.rct.right # ビームの左座標 = こうかとんの右座標
-        self.vx, self.vy = +5, 0
+        self.vx, self.vy = bird.dire[0], bird.dire[1] # ビームの進む向きををこうかとんの向きに合わせる
+        theta = math.atan2(-self.vy, self.vx) # ビームの進行方向の角度をラジアンに変換
+        angle = math.degrees(theta) # ラジアンを度に変換
+        self.img = pg.transform.rotozoom(self.img, angle, 1.0)
+        # self.rct.width = bird.rct.width + ((bird.rct.left + bird.rct.right) * self.vx) / 5 
+        # self.rct.height = bird.rct.height + ((bird.rct.bottom + bird.rct.top) * self.vy) / 5
 
     def update(self, screen: pg.Surface):
         """
