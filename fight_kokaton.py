@@ -8,7 +8,7 @@ import math
 
 WIDTH = 1100  # ゲームウィンドウの幅
 HEIGHT = 650  # ゲームウィンドウの高さ
-NUM_OF_BOMBS = 5 # 爆弾の数
+NUM_OF_BOMBS = 5  # 爆弾の数
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -97,13 +97,13 @@ class Beam:
         ビーム画像Surfaceを生成する
         引数 bird：ビームを放つこうかとん（Birdインスタンス）
         """
-        self.img = pg.image.load(f"fig/beam.png") # Surface
-        self.rct = self.img.get_rect() # Rect
-        self.rct.center = bird.rct.center # ビームの中心縦座標 = こうかとんの中心縦座標
-        self.rct.left = bird.rct.right # ビームの左座標 = こうかとんの右座標
-        self.vx, self.vy = bird.dire[0], bird.dire[1] # ビームの進む向きををこうかとんの向きに合わせる
-        theta = math.atan2(-self.vy, self.vx) # ビームの進行方向の角度をラジアンに変換
-        angle = math.degrees(theta) # ラジアンを度に変換
+        self.img = pg.image.load(f"fig/beam.png")  # Surface
+        self.rct = self.img.get_rect()  # Rect
+        self.rct.center = bird.rct.center  # ビームの中心縦座標 = こうかとんの中心縦座標
+        self.rct.left = bird.rct.right  # ビームの左座標 = こうかとんの右座標
+        self.vx, self.vy = bird.dire[0], bird.dire[1]  # ビームの進む向きををこうかとんの向きに合わせる
+        theta = math.atan2(-self.vy, self.vx)  # ビームの進行方向の角度をラジアンに変換
+        angle = math.degrees(theta)  # ラジアンを度に変換
         self.img = pg.transform.rotozoom(self.img, angle, 1.0)
         # self.rct.width = bird.rct.width + ((bird.rct.left + bird.rct.right) * self.vx) / 5 
         # self.rct.height = bird.rct.height + ((bird.rct.bottom + bird.rct.top) * self.vy) / 5
@@ -182,8 +182,8 @@ class Explosion:
         self.imgt = pg.transform.flip(self.img, True, True)
         self.list_img = [self.img, self.imgt]
         self.rct = self.img.get_rect()
-        self.rct.center = bomb.rct.center # 爆弾の中心座標に爆発エフェクト
-        self.life = random.randint(10, 101) # 爆発表示時間
+        self.rct.center = bomb.rct.center  # 爆弾の中心座標に爆発エフェクト
+        self.life = random.randint(10, 101)  # 爆発表示時間
     
     def update(self, screen: pg.Surface):
         """
@@ -234,7 +234,7 @@ def main():
         
         for b, bomb in enumerate(bombs):
             for bm, beam in enumerate(beams):
-                if beam is not None: # ビームを打っていない時かつビームがすべて画面にないとき, ビームリストが空なので
+                if beam is not None:  # ビームを打っていない時かつビームがすべて画面にないとき, ビームリストが空なので
                     if beam.rct.colliderect(bomb.rct): 
                         # ビームが爆弾に当たったら, 爆弾とビームを消す
                         beams[bm] = None
@@ -255,7 +255,7 @@ def main():
             exp.update(screen) 
         for beam in beams:  # ビームが存在していたら
             beam.update(screen)
-        for bomb in bombs: # 爆弾が存在していたら   
+        for bomb in bombs:  # 爆弾が存在していたら   
             bomb.update(screen)
         score.update(screen, points)
         pg.display.update()
